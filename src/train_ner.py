@@ -5,6 +5,7 @@ Created on Fri Oct 25 10:33:42 2019
 @author: Administrator
 """
 
+import os
 import numpy as np
 import pandas as pd
 import pickle
@@ -16,9 +17,11 @@ from keras.models import Model,load_model
 from keras.optimizers import Adam
 
 max_seq_len = 20
-config_path = '../../news_classifer_task/wwm/bert_config.json'
-checkpoint_path = '../../news_classifer_task/wwm/bert_model.ckpt'
-dict_path = '../../news_classifer_task/wwm/vocab.txt'
+pretrained_model_path = "../../../../../../../../research/pretrained_models/chinese_roberta_wwm_ext_L-12_H-768_A-12/"
+
+config_path = os.path.join(pretrained_model_path, 'bert_config.json')
+checkpoint_path = os.path.join(pretrained_model_path, 'bert_model.ckpt')
+dict_path = os.path.join(pretrained_model_path, 'vocab.txt')
 
 token_dict = {}
 with codecs.open(dict_path, 'r', 'utf8') as reader:
@@ -136,7 +139,11 @@ def restore_entity_from_labels_on_corpus(predicty,questions):
         all_entitys.append(restore_entity_from_labels(predicty[i],questions[i]))
     return all_entitys
 
-model = load_model('../data/model/ner_model.h5', custom_objects=get_custom_objects())
+# model = load_model('../data/model/ner_model.h5', custom_objects=get_custom_objects())
+model_path = "../data/model"
+if not os.path.exists(model_path):
+    os.mkdir(model_path)
+
 for i in range(20):
     model.fit([trainx1,trainx2],trainy, epochs=1, batch_size=64)
     predicty = model.predict([testx1,testx2],batch_size=64).tolist()#(num,len,1)
@@ -148,10 +155,10 @@ for i in range(20):
     p,r,f = computeF(test_entitys,predict_entitys)
     print ('%d epoch f-score is %.3f'%(i,f))
     if f>maxf:
-        model.save('../data/model/ner_model.h5')
+        model.save(os.path.join(model_path, 'ner_model.h5'))
         maxf = f
         
-model = load_model('../data/model/ner_model.h5', custom_objects=get_custom_objects())
+model = load_model(os.path.join(model_path, 'ner_model.h5'), custom_objects=get_custom_objects())
 predicty = model.predict([testx1,testx2],batch_size=32).tolist()#(num,len,1)
 predicty = [[1 if each[0]>0.5 else 0 for each in line] for line in predicty]
 predict_entitys = restore_entity_from_labels_on_corpus(predicty,test_questions)
