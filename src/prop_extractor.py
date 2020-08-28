@@ -242,7 +242,7 @@ if __name__ == "__main__":
     outputpaths = ['../data/all_mentions_train.pkl','../data/all_mentions_valid.pkl','../data/all_mentions_test.pkl']
     starttime = time.time()
     pe = PropExtractor()
-    for i in range(1,2):
+    for i in range(len(inputpaths)):
         inputpath = inputpaths[i]
         outputpath = outputpaths[i]
         corpus = pickle.load(open(inputpath,'rb'))

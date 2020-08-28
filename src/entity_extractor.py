@@ -3,8 +3,10 @@
 Created on Thu Apr  4 19:11:26 2019
 
 @author: cmy
+@modified: zeweichu
 """
 
+import os
 import codecs as cs
 import pickle
 import time
@@ -20,16 +22,19 @@ class SubjectExtractor(object):
             self.entity2hop_dic = pickle.load(open('../data/entity2hop_dic.pkl','rb'))
         except:
             self.entity2hop_dic = {}
-        self.word_2_frequency = self.LoadWord2Index('../../token2vec/SouGou_word_frequece/SogouLabDic.dic')
+        self.word_2_frequency = self.LoadWord2Index('../../token2vec/sogouFreq/SogouLabDic.txt')
         self.not_pos = {'f','d','h','k','r','c','p','u','y','e','o','g','w','m'}  # 'q','mq','v','a','t',
         self.segger = thulac.thulac()
         self.pass_mention_dic = {'是什么','在哪里','哪里','什么','提出的','有什么','国家','哪个','所在',
                                  '培养出','为什么','什么时候','人','你知道','都包括','是谁','告诉我','又叫做','有','是'}
+        if not os.path.exists("../data/record"):
+            os.mkdir("../data/record")
         self.fp = cs.open('../data/record/entity_extractor_ans.txt','w')
         print ('entity extractor loaded')
     
     def LoadWord2Index(self,path):
         dic = {}
+        # with cs.open(path,'r','utf-8') as fp:
         with cs.open(path,'r','utf-8') as fp:
             lines = fp.read().split('\n')[:-1]
             for line in lines:

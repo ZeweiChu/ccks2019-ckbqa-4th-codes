@@ -3,10 +3,14 @@
 Created on Thu Mar 21 09:40:56 2019
 
 @author: cmy
+@modified: zeweichu
 """
+import os
 segment_dic = {}
 
-with open('../PKUBASE/pkubase-full.txt','r',encoding='utf-8') as fp:
+pkubase_path = "../PKUBASE/"
+
+with open(os.path.join(pkubase_path, 'pkubase-complete.txt'),'r',encoding='utf-8') as fp:
     for line in fp:
         if line:
             entity = line.split('\t')[0]
@@ -14,7 +18,7 @@ with open('../PKUBASE/pkubase-full.txt','r',encoding='utf-8') as fp:
             if '_' in ename:
                 ename = ename.split('_')[0]
             segment_dic[ename] = 1
-with open('../PKUBASE/pkubase-mention2ent.txt','r',encoding='utf-8') as fp:
+with open(os.path.join(pkubase_path, 'pkubase-mention2ent.txt'),'r',encoding='utf-8') as fp:
     for line in fp:
         if line:
             ename = line.split('\t')[0]
@@ -32,7 +36,7 @@ with open('../data/segment_dic.txt','w',encoding = 'utf-8') as fp:
     fp.write(content[:-1])
         
 prop_dic = {}
-with open('../PKUBASE/pkubase-full.txt','r',encoding='utf-8') as fp:
+with open(os.path.join(pkubase_path, 'pkubase-complete.txt'),'r',encoding='utf-8') as fp:
     for line in fp:
         if line:
             try:

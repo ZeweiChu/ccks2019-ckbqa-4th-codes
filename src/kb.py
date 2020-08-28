@@ -8,7 +8,7 @@ from neo4j import GraphDatabase
 import time
 
 #neo4j
-driver = GraphDatabase.driver("bolt://localhost:7687")
+driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "julyedu"))
 session = driver.session()
 begintime = time.time()
 #session.run('MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN count(n.name) + count(r)')

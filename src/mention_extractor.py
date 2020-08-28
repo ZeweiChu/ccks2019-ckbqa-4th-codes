@@ -3,7 +3,9 @@
 Created on Thu Mar 21 20:11:15 2019
 
 @author: cmy
+@modified: zeweichu
 """
+import os
 import jieba
 import codecs as cs
 import pickle
@@ -11,6 +13,8 @@ import time
 import numpy as np
 from keras_bert import Tokenizer,get_custom_objects
 from keras.models import load_model
+
+pretrained_model_path = "../../../../../../../../research/pretrained_models/chinese_roberta_wwm_ext_L-12_H-768_A-12/"
 
 class MentionExtractor(object):
     def __init__(self,):
@@ -29,7 +33,7 @@ class MentionExtractor(object):
         custom_objects = get_custom_objects()
         self.ner_model = load_model('../data/model/ner_model.h5', custom_objects=custom_objects)
         #加载bert tokenlizer
-        dict_path = '../../news_classifer_task/wwm/vocab.txt'
+        dict_path = os.path.join(pretrained_model_path, 'vocab.txt')
         token_dict = {}
         with cs.open(dict_path, 'r', 'utf8') as reader:
             for line in reader:

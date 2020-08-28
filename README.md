@@ -11,12 +11,20 @@
   - data: 存放各种字典，中间文件及最终答案
   - corpus: 原始语料集文件
   - PKUBASE: 评测方提供的知识库文件
-  ### 依赖字典：
+
+### 依赖字典(利用helper目录下的程序生成各种辅助文件):
   这些字典均可通过helper中的程序生成
   - segment_dic.txt: 分词词典
   - prop_dic.pkl: 知识库中的属性值字典
   - mention2entity_dic.pkl: 实体链接字典，实际就是评测方提供的文件存成了pkl格式
   - char_2_prop.pkl：知识库中字符to属性值的倒排索引，用于属性值模糊匹配
+
+
+下载[word2vec](http://pan.baidu.com/s/1dFeNNK9)
+
+下载[搜狗词频文件](http://www.sogou.com/labs/resource/w.php)
+
+
   ### 将PKUBASE知识库搭建在本地服务器
   1. 下载neo4j图数据库的linux版本，地址https://neo4j.com/ ，上传到服务器上解压即可。配置好conf，具体参考https://blog.csdn.net/u013946356/article/details/81736232 
   2. 使用大规模导入工具 ./neo4j-admin import 来导入知识库，这里需要把PKUBASE知识库源文件处理成一定格式，参考：生成neo4j文件和各种词典.ipynb
